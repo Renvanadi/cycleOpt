@@ -1,0 +1,55 @@
+
+Table SubjectModel {
+  id int [pk, increment]
+  name varchar
+  body_mass_kg double
+  height_m double
+  seated_height_m double
+  forearm_length_m double
+  upper_arm_length_m double
+  thigh_length_m double
+  shank_length_m double
+  neck_length_m double
+}
+
+Table Point3D {
+  id int [pk, increment]
+  x double
+  y double
+  z double
+}
+
+Table BicycleGeometry {
+  id int [pk, increment]
+  crank_length_m double
+  saddle_height_m double
+  handlebar_height_m double
+  saddle_position_id int [ref: > Point3D.id]
+  bottom_bracket_position_id int [ref: > Point3D.id]
+  handlebar_position_id int [ref: > Point3D.id]
+  q_factor_m double
+  handlebar_width_m double
+}
+
+Table CyclingCondition {
+  id int [pk, increment]
+  power_watts double
+  cadence_rpm double
+  speed_mps double
+}
+
+Table RidingStyle {
+  id int [pk, increment]
+  type RidingStyleType
+  muscle_weight double
+  metabolic_weight double
+  volume_weight double
+}
+
+Table SimulationScenario {
+  id int [pk, increment]
+  subject_model_id int [ref: > SubjectModel.id]
+  bicycle_geometry_id int [ref: > BicycleGeometry.id]
+  cycling_condition_id int [ref: > CyclingCondition.id]
+  riding_style_id int [ref: > RidingStyle.id]
+}

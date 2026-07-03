@@ -15,7 +15,12 @@ int main(int argc, char** argv) {
     const std::string output_path = (argc >= 3) ? argv[2] : "output.txt";
 
     cycleopt::JsonInputLoader loader;
-    cycleopt::OptimizationService optimizer;
+    std::vector<std::shared_ptr<cycleopt::ObjectiveFunction>> objectives;
+    objectives.push_back(std::make_shared<cycleopt::MuscleActivityObjective>());
+    objectives.push_back(std::make_shared<cycleopt::MetabolicEnergyObjective>());
+    objectives.push_back(std::make_shared<cycleopt::VolumeWeightedActivityObjective>());
+
+    cycleopt::OptimizationService optimizer(std::move(objectives));
     cycleopt::ResultExporter exporter;
 
     const auto scenario = loader.load(input_path);

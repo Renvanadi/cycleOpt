@@ -9,6 +9,9 @@ option(BUILD_TESTS "Build tests" ON)
 
 include(GNUInstallDirs)
 
+set(OpenSim_DIR "/home/okamoto/opensim-core/cmake")
+find_package(OpenSim REQUIRED)
+
 add_library(cycleopt_core
   src/domain/subject_model.cpp
   src/domain/bicycle_geometry.cpp
@@ -16,13 +19,22 @@ add_library(cycleopt_core
   src/domain/riding_style.cpp
   src/domain/simulation_scenario.cpp
   src/application/optimization_service.cpp
+  src/application/objective_function.cpp
   src/infrastructure/json_input_loader.cpp
   src/infrastructure/result_exporter.cpp
+  src/infrastructure/open_sim_model_factory.cpp
+  src/infrastructure/moco_problem_translator.cpp
+  src/infrastructure/opensim_adapter.cpp
 )
 
 target_include_directories(cycleopt_core
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(cycleopt_core
+  PUBLIC
+    osimMoco
 )
 
 target_compile_features(cycleopt_core PUBLIC cxx_std_17)

@@ -93,6 +93,18 @@ cycleopt_tests_EXTERNAL_OBJECTS =
 cycleopt_tests: CMakeFiles/cycleopt_tests.dir/tests/test_main.cpp.o
 cycleopt_tests: CMakeFiles/cycleopt_tests.dir/build.make
 cycleopt_tests: libcycleopt_core.a
+cycleopt_tests: /home/okamoto/opensim-core/sdk/lib/libosimMoco.so
+cycleopt_tests: /home/okamoto/opensim-core/sdk/lib/libosimTools.so
+cycleopt_tests: /home/okamoto/opensim-core/sdk/lib/libosimAnalyses.so
+cycleopt_tests: /home/okamoto/opensim-core/sdk/lib/libosimActuators.so
+cycleopt_tests: /home/okamoto/opensim-core/sdk/lib/libosimSimulation.so
+cycleopt_tests: /home/okamoto/opensim-core/sdk/lib/libosimCommon.so
+cycleopt_tests: /home/okamoto/opensim-core/sdk/spdlog/lib/libspdlog.a
+cycleopt_tests: /home/okamoto/opensim-core/sdk/Simbody/lib/libSimTKsimbody.so.3.9
+cycleopt_tests: /home/okamoto/opensim-core/sdk/Simbody/lib/libSimTKmath.so.3.9
+cycleopt_tests: /home/okamoto/opensim-core/sdk/Simbody/lib/libSimTKcommon.so.3.9
+cycleopt_tests: /usr/lib/x86_64-linux-gnu/libopenblas.so
+cycleopt_tests: /home/okamoto/opensim-core/sdk/lib/libosimLepton.so
 cycleopt_tests: CMakeFiles/cycleopt_tests.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/okamoto/git/cycleOpt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable cycleopt_tests"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cycleopt_tests.dir/link.txt --verbose=$(VERBOSE)

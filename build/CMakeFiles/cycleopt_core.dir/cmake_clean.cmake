@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/cycleopt_core.dir/src/domain/subject_model.cpp.o.d"
   "CMakeFiles/cycleopt_core.dir/src/infrastructure/json_input_loader.cpp.o"
   "CMakeFiles/cycleopt_core.dir/src/infrastructure/json_input_loader.cpp.o.d"
+  "CMakeFiles/cycleopt_core.dir/src/infrastructure/opensim_adapter.cpp.o"
+  "CMakeFiles/cycleopt_core.dir/src/infrastructure/opensim_adapter.cpp.o.d"
   "CMakeFiles/cycleopt_core.dir/src/infrastructure/result_exporter.cpp.o"
   "CMakeFiles/cycleopt_core.dir/src/infrastructure/result_exporter.cpp.o.d"
   "libcycleopt_core.a"

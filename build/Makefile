@@ -378,6 +378,30 @@ src/infrastructure/json_input_loader.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cycleopt_core.dir/build.make CMakeFiles/cycleopt_core.dir/src/infrastructure/json_input_loader.cpp.s
 .PHONY : src/infrastructure/json_input_loader.cpp.s
 
+src/infrastructure/opensim_adapter.o: src/infrastructure/opensim_adapter.cpp.o
+.PHONY : src/infrastructure/opensim_adapter.o
+
+# target to build an object file
+src/infrastructure/opensim_adapter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cycleopt_core.dir/build.make CMakeFiles/cycleopt_core.dir/src/infrastructure/opensim_adapter.cpp.o
+.PHONY : src/infrastructure/opensim_adapter.cpp.o
+
+src/infrastructure/opensim_adapter.i: src/infrastructure/opensim_adapter.cpp.i
+.PHONY : src/infrastructure/opensim_adapter.i
+
+# target to preprocess a source file
+src/infrastructure/opensim_adapter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cycleopt_core.dir/build.make CMakeFiles/cycleopt_core.dir/src/infrastructure/opensim_adapter.cpp.i
+.PHONY : src/infrastructure/opensim_adapter.cpp.i
+
+src/infrastructure/opensim_adapter.s: src/infrastructure/opensim_adapter.cpp.s
+.PHONY : src/infrastructure/opensim_adapter.s
+
+# target to generate assembly for a file
+src/infrastructure/opensim_adapter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cycleopt_core.dir/build.make CMakeFiles/cycleopt_core.dir/src/infrastructure/opensim_adapter.cpp.s
+.PHONY : src/infrastructure/opensim_adapter.cpp.s
+
 src/infrastructure/result_exporter.o: src/infrastructure/result_exporter.cpp.o
 .PHONY : src/infrastructure/result_exporter.o
 
@@ -487,6 +511,9 @@ help:
 	@echo "... src/infrastructure/json_input_loader.o"
 	@echo "... src/infrastructure/json_input_loader.i"
 	@echo "... src/infrastructure/json_input_loader.s"
+	@echo "... src/infrastructure/opensim_adapter.o"
+	@echo "... src/infrastructure/opensim_adapter.i"
+	@echo "... src/infrastructure/opensim_adapter.s"
 	@echo "... src/infrastructure/result_exporter.o"
 	@echo "... src/infrastructure/result_exporter.i"
 	@echo "... src/infrastructure/result_exporter.s"

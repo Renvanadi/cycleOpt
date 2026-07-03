@@ -15,6 +15,8 @@ This project is intentionally structured to support future research extensions w
 - Interface: CLI entry point.
 
 ## Extension points
-- Objective functions can be replaced by introducing new implementations.
-- Constraints and optimization settings can be added later.
-- External OpenSim logic will be integrated behind the application layer.
+- `ObjectiveFunction` を導入し、筋活動・代謝・体積重みの目的関数を追加できる。
+- 将来的に新しい目的関数や制約を `OptimizationService` に追加しやすい構造。
+- `OpenSimModelFactory` と `MocoProblemTranslator` で OpenSim / Moco の役割を分離し、実装変更に強い。
+- JSON 入力仕様書は `docs/json_input_spec.md` にまとめている。
+- クラス構造は `docs/cycleopt_structure.dbml` に定義している。
