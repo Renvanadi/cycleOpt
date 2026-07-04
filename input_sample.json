@@ -1,0 +1,72 @@
+{
+  "name": "Taro Suzuki",
+  "body_mass_kg": 72.0,
+  "height_m": 1.78,
+  "seated_height_m": 0.92,
+  "forearm_length_m": 0.28,
+  "upper_arm_length_m": 0.32,
+  "thigh_length_m": 0.44,
+  "shank_length_m": 0.45,
+  "neck_length_m": 0.12,
+  "pelvis_width_m": 0.28,
+  "foot_length_m": 0.26,
+  "shoulder_width_m": 0.42,
+  "bicycle": {
+    "frame": {
+      "wheelbase": 0.98,
+      "chainstay_length": 0.405,
+      "seat_tube_length": 0.52,
+      "top_tube_length": 0.53,
+      "effective_top_tube_length": 0.545,
+      "down_tube_length": 0.62,
+      "head_tube_length": 0.14,
+      "seat_tube_angle": 73.5,
+      "head_tube_angle": 72.5,
+      "bottom_bracket_drop": 0.07,
+      "bottom_bracket_height": 0.27,
+      "fork_length": 0.37,
+      "fork_offset": 0.045,
+      "front_center": 0.585,
+      "rear_center": 0.405,
+      "stack": 0.54,
+      "reach": 0.385
+    },
+    "cockpit": {
+      "stem_length": 0.1,
+      "stem_angle": -6.0,
+      "handlebar_width": 0.42,
+      "handlebar_reach": 0.08,
+      "handlebar_drop": 0.125
+    },
+    "drivetrain": {
+      "crank_length": 0.17,
+      "q_factor": 0.146,
+      "pedal_spindle_length": 0.053
+    },
+    "wheel_tire": {
+      "wheel_radius": 0.34,
+      "tire_radius": 0.014
+    },
+    "contact_points": {
+      "saddle_height": 0.73,
+      "saddle_setback": 0.05,
+      "saddle_tilt": 0.0,
+      "hood_position": 0.0,
+      "hand_position": 0.0,
+      "saddle_position": {"x": -0.15, "y": 0.70, "z": 0.0},
+      "bottom_bracket_position": {"x": 0.0, "y": 0.0, "z": 0.0},
+      "handlebar_position": {"x": 0.45, "y": 0.60, "z": 0.0}
+    }
+  },
+  "cycling_condition": {
+    "power_watts": 250.0,
+    "cadence_rpm": 90.0,
+    "speed_mps": 11.0
+  },
+  "riding_style": {
+    "type": 0,
+    "muscle_weight": 1.0,
+    "metabolic_weight": 0.0,
+    "volume_weight": 0.0
+  }
+}
