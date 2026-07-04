@@ -1,15 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 project(cycleOpt LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(BUILD_TESTS "Build tests" ON)
 
-include(GNUInstallDirs)
-
-set(OpenSim_DIR "/home/okamoto/opensim-core/cmake")
+# find_package OpenSim
 find_package(OpenSim REQUIRED)
 
 add_library(cycleopt_core
@@ -30,6 +28,7 @@ add_library(cycleopt_core
 target_include_directories(cycleopt_core
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external
 )
 
 target_link_libraries(cycleopt_core
@@ -37,7 +36,9 @@ target_link_libraries(cycleopt_core
     osimMoco
 )
 
-target_compile_features(cycleopt_core PUBLIC cxx_std_17)
+if(OpenSim_FOUND)
+  target_compile_definitions(cycleopt_core PRIVATE OPENSIM_FOUND)
+endif()
 
 add_executable(cycleopt_cli
   src/interface/main.cpp
@@ -53,8 +54,3 @@ if(BUILD_TESTS)
   target_link_libraries(cycleopt_tests PRIVATE cycleopt_core)
   add_test(NAME cycleopt_tests COMMAND cycleopt_tests)
 endif()
-
-install(TARGETS cycleopt_core cycleopt_cli
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)

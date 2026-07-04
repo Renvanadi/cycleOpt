@@ -16,7 +16,10 @@ public:
                  double upperArmLengthM,
                  double thighLengthM,
                  double shankLengthM,
-                 double neckLengthM)
+                 double neckLengthM,
+                 double pelvisWidthM = 0.0,
+                 double footLengthM = 0.0,
+                 double shoulderWidthM = 0.0)
         : name_(std::move(name)),
           body_mass_kg_(bodyMassKg),
           height_m_(heightM),
@@ -25,10 +28,13 @@ public:
           upper_arm_length_m_(upperArmLengthM),
           thigh_length_m_(thighLengthM),
           shank_length_m_(shankLengthM),
-          neck_length_m_(neckLengthM) {}
+          neck_length_m_(neckLengthM),
+          pelvis_width_m_(pelvisWidthM),
+          foot_length_m_(footLengthM),
+          shoulder_width_m_(shoulderWidthM) {}
 
     SubjectModel(std::string name, double bodyMassKg, double heightM)
-        : SubjectModel(std::move(name), bodyMassKg, heightM, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0) {}
+        : SubjectModel(std::move(name), bodyMassKg, heightM, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0) {}
 
     const std::string& name() const { return name_; }
     double bodyMassKg() const { return body_mass_kg_; }
@@ -39,6 +45,9 @@ public:
     double thighLengthM() const { return thigh_length_m_; }
     double shankLengthM() const { return shank_length_m_; }
     double neckLengthM() const { return neck_length_m_; }
+    double pelvisWidthM() const { return pelvis_width_m_; }
+    double footLengthM() const { return foot_length_m_; }
+    double shoulderWidthM() const { return shoulder_width_m_; }
 
 private:
     std::string name_;
@@ -50,6 +59,9 @@ private:
     double thigh_length_m_ = 0.0;
     double shank_length_m_ = 0.0;
     double neck_length_m_ = 0.0;
+    double pelvis_width_m_ = 0.0;
+    double foot_length_m_ = 0.0;
+    double shoulder_width_m_ = 0.0;
 };
 
 }  // namespace cycleopt
