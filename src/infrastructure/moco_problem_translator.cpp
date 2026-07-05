@@ -11,35 +11,37 @@ std::string MocoProblemTranslator::translateProblem(
 
     MocoStudy study;
     study.setName("cycling_optimization");
-
     MocoProblem& problem = study.updProblem();
 
     // 1. Set Model
-    Model model("final_cycling_model.osim");
-    problem.setModelCopy(model);
+    problem.setModelCopy(Model("cycling_model_for_moco.osim"));
 
     // 2. Set Time Bounds
     double cadenceRpm = scenario.condition().cadenceRpm();
     double period = 60.0 / cadenceRpm;
     problem.setTimeBounds(0, period);
 
-    // 3. Coordinate Bounds and Periodicity
-    auto& mocoModel = problem.updModel();
-    // Ensure the crank starts at 0 and ends at 2*pi
+    // 3. State Info
     problem.setStateInfo("/jointset/bottom_bracket/angle/value", {0, 6.3}, 0, 6.28);
 
-    // 4. Goals
-    auto* effort = problem.addGoal<MocoControlGoal>("effort");
-    effort->setWeight(1.0);
+    // 4. Goals from objectives
+    if (objectives.empty()) {
+        problem.addGoal<MocoControlGoal>("effort", 1.0);
+    } else {
+        for (const auto& obj : objectives) {
+            auto* goal = problem.addGoal<MocoControlGoal>(obj->name());
+            goal->setWeight(1.0);
+        }
+    }
 
     auto* periodicity = problem.addGoal<MocoPeriodicityGoal>("periodicity");
-    for (const auto& coordinate : model.getComponentList<Coordinate>()) {
-        if (coordinate.getName() != "angle") { // bottom_bracket angle is not periodic in value but in state
+    for (const auto& coordinate : problem.getPhase(0).getModel().getComponentList<Coordinate>()) {
+        if (coordinate.getName() != "angle") {
              periodicity->addStatePair({coordinate.getStateVariableNames()[0]});
         }
     }
 
-    // 5. Solver Setup
+    // 5. Solver
     MocoCasADiSolver& solver = study.initCasADiSolver();
     solver.set_num_mesh_intervals(25);
     solver.set_optim_solver("ipopt");
