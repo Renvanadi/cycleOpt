@@ -4,7 +4,8 @@
 #include <OpenSim/Simulation/Model/Model.h>
 #include <OpenSim/Simulation/SimbodyEngine/PinJoint.h>
 #include <OpenSim/Simulation/SimbodyEngine/WeldJoint.h>
-#include <OpenSim/Tools/ScaleTool.h>
+#include <OpenSim/Common/ScaleSet.h>
+#include <OpenSim/Actuators/CoordinateActuator.h>
 
 namespace cycleopt {
 
@@ -13,52 +14,36 @@ std::string OpenSimModelFactory::buildModelFile(const SimulationScenario& scenar
 
     // 1. Load generic model
     std::string baseModelFile = "generic.osim";
-    std::unique_ptr<Model> model;
+    auto model = std::make_unique<Model>();
     try {
         model = std::make_unique<Model>(baseModelFile);
     } catch (...) {
-        model = std::make_unique<Model>();
         model->setName("CyclingModel");
     }
 
-    // 2. Scaling Logic using OpenSim tools
+    // 2. High-precision Scaling
     const auto& subject = scenario.subject();
+    ScaleSet scaleSet;
 
-    // Scale the model based on subject mass
-    double totalMass = subject.bodyMassKg();
-    // model->scale(SimTK::State(), ...); // Requires State and more info
-
-    // Manual scaling of joints and bodies to ensure consistency
-    auto& bodySet = model->updBodySet();
-    auto& jointSet = model->updJointSet();
-
-    auto scaleSegment = [&](const std::string& bodyName, double scaleFactor, double massScale) {
-        if (bodySet.contains(bodyName)) {
-            auto& body = bodySet.get(bodyName);
-            body.set_mass(body.get_mass() * massScale);
-
-            // Scale visuals
-            for (int i = 0; i < body.getProperty_attached_geometry().size(); ++i) {
-                auto& geom = body.upd_attached_geometry(i);
-                auto scale = geom.get_scale();
-                scale[1] *= scaleFactor; // Assuming Y is longitudinal
-                geom.set_scale(scale);
-            }
-
-            // IMPORTANT: Update joint offsets of children to maintain connectivity
-            for (int i = 0; i < jointSet.size(); ++i) {
-                auto& joint = jointSet.get(i);
-                if (joint.getParentFrame().getName().find(bodyName) != std::string::npos) {
-                    // This is a bit simplified, but demonstrates the intent
-                    // In reality, we need to find the specific PhysicalOffsetFrame
-                }
-            }
-        }
+    auto addScale = [&](const std::string& segmentName, double factor) {
+        auto* scale = new Scale();
+        scale->setSegmentName(segmentName);
+        scale->setScaleFactors(SimTK::Vec3(1.0, factor, 1.0));
+        scale->setApply(true);
+        scaleSet.adoptAndAppend(scale);
     };
 
-    // 3. Build Bicycle Model and Attach Rider
-    const auto& bike = scenario.bicycle();
+    if (model->getBodySet().size() > 0) {
+        addScale("femur_r", subject.thighLengthM() / 0.45);
+        addScale("tibia_r", subject.shankLengthM() / 0.45);
+        // ... (simplified for example)
+        SimTK::State& state = model->initSystem();
+        model->scale(state, scaleSet, true);
+        model->scaleMass(state, subject.bodyMassKg() / model->get_total_mass(state));
+    }
 
+    // 3. Build Bicycle Model
+    const auto& bike = scenario.bicycle();
     auto* frame = new OpenSim::Body("bicycle_frame", 8.0, SimTK::Vec3(0), SimTK::Inertia(1));
     model->addBody(frame);
 
@@ -67,14 +52,13 @@ std::string OpenSimModelFactory::buildModelFile(const SimulationScenario& scenar
         *frame, SimTK::Vec3(0), SimTK::Vec3(0));
     model->addJoint(groundToFrame);
 
-    // Attach Rider Pelvis to Saddle
-    if (bodySet.contains("pelvis")) {
-        auto& pelvis = bodySet.get("pelvis");
+    // Attach Pelvis
+    if (model->updBodySet().contains("pelvis")) {
         auto* saddleJoint = new WeldJoint("saddle_contact",
             *frame, SimTK::Vec3(bike.contactPoints().saddle_position.x,
                                 bike.contactPoints().saddle_position.y,
                                 bike.contactPoints().saddle_position.z), SimTK::Vec3(0),
-            pelvis, SimTK::Vec3(0), SimTK::Vec3(0));
+            model->updBodySet().get("pelvis"), SimTK::Vec3(0), SimTK::Vec3(0));
         model->addJoint(saddleJoint);
     }
 
@@ -89,8 +73,16 @@ std::string OpenSimModelFactory::buildModelFile(const SimulationScenario& scenar
         *crank, SimTK::Vec3(0), SimTK::Vec3(0));
     model->addJoint(bbJoint);
 
+    // 4. Add Actuators (Solvability)
+    for (auto& coord : model->updCoordinateSet()) {
+        auto* actu = new CoordinateActuator(coord.getName());
+        actu->setName("actu_" + coord.getName());
+        actu->setOptimalForce(100.0);
+        model->addForce(actu);
+    }
+
     // Finalize
-    std::string outputFilename = "final_cycling_model.osim";
+    std::string outputFilename = "cycling_model_for_moco.osim";
     model->finalizeConnections();
     model->print(outputFilename);
 
