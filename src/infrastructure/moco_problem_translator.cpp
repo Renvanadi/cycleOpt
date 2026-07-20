@@ -14,7 +14,7 @@ std::string MocoProblemTranslator::translateProblem(
     MocoProblem& problem = study.updProblem();
 
     // 1. Set Model
-    problem.setModelCopy(Model("cycling_model_for_moco.osim"));
+    problem.setModelAsCopy(Model("cycling_model_for_moco.osim"));
 
     // 2. Set Time Bounds
     double cadenceRpm = scenario.condition().cadenceRpm();

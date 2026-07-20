@@ -4,7 +4,7 @@ project(cycleOpt LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(BUILD_TESTS "Build tests" ON)
 
 # find_package OpenSim
@@ -18,6 +18,7 @@ add_library(cycleopt_core
   src/domain/simulation_scenario.cpp
   src/application/optimization_service.cpp
   src/application/objective_function.cpp
+  src/infrastructure/human_model_builder.cpp
   src/infrastructure/json_input_loader.cpp
   src/infrastructure/result_exporter.cpp
   src/infrastructure/open_sim_model_factory.cpp
@@ -34,6 +35,10 @@ target_include_directories(cycleopt_core
 target_link_libraries(cycleopt_core
   PUBLIC
     osimMoco
+    osimSimulation
+    osimActuators
+    osimAnalyses
+    osimTools
 )
 
 if(OpenSim_FOUND)
